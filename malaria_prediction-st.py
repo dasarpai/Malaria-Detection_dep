@@ -4,29 +4,42 @@ from tensorflow.keras.applications.xception import preprocess_input, decode_pred
 from tensorflow.keras.preprocessing import image
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 def load_model():
-    loaded_model = tf.keras.models.load_model(r'model-Malaria-Detection-xception')
+    #loaded_model = tf.keras.models.load_model(r'model-Malaria-Detection-xception')
+    loaded_model = tf.keras.models.load_model(r'model-Malaria-Detection-mobilenet2')
+    
     # loaded_model.summary()
     #x = tf.random.uniform((10, 3))
     return loaded_model
 
-file1 = st.file_uploader('Upload an Image')
+loaded_model = load_model()
+
+def file_selector(folder_path='.'):
+    filenames = os.listdir("./images/")
+    selected_filename = st.selectbox('Select a file', filenames)
+    return os.path.join(folder_path, selected_filename)
+
+file1 = './images/'+ file_selector()
+
+# file1 = st.file_uploader('Upload an Image')
+# file1 = file1.name
 btn = st.button('Submit Image for Prediction')
 if btn and file1!=None:
-    img = image.load_img(file1.name, target_size=(71, 71))
+    img = image.load_img(file1, target_size=(71, 71))
     print (img)
     img_array = image.img_to_array(img)
     img_batch = np.expand_dims(img_array, axis=0)
     img_preprocessed = preprocess_input(img_batch)
 
-    loaded_model = load_model()
-    prediction = loaded_model.predict(img_preprocessed)
+    prediction = np.round(loaded_model.predict(img_preprocessed)[0][0],2)
 
     if prediction<.1:
-        title = "Infected"
+        title = "Uninfected " + str(prediction*100) +"%"       
     else:
-        title = "Uninfected"
+        title = "Infected " + str(prediction*100) + "%"
+        
 
     st.header("It is "+title)
-    st.image(file1.name)
+    st.image(file1)
