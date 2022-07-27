@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 
 bfg --strip-blobs-bigger-than 50M
+secrets.toml
 
 # C extensions
 *.so
