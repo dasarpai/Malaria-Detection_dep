@@ -23,8 +23,8 @@ import matplotlib.pyplot as plt
 import os
 
 def load_model():
-    loaded_model = tf.keras.models.load_model(r'model-Malaria-Detection-xception')
-    #loaded_model = tf.keras.models.load_model(r'model-Malaria-Detection-mobilenet2')
+    #loaded_model = tf.keras.models.load_model(r'model-Malaria-Detection-xception')
+    loaded_model = tf.keras.models.load_model(r'model-Malaria-Detection-mobilenet2')
     
     # loaded_model.summary()
     #x = tf.random.uniform((10, 3))
