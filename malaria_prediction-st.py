@@ -49,7 +49,7 @@ if btn and file1!=None:
     img_batch = np.expand_dims(img_array, axis=0)
     img_preprocessed = preprocess_input(img_batch)
 
-    prediction = np.round(loaded_model.predict(img_preprocessed)[0][0],2)
+    prediction = np.round(1-loaded_model.predict(img_preprocessed)[0][0],2)
 
     if prediction<.1:
         title = "Uninfected " + str(prediction*100) +"%"       
