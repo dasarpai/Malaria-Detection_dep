@@ -23,8 +23,8 @@ import matplotlib.pyplot as plt
 import os
 
 def load_model():
-    #loaded_model = tf.keras.models.load_model(r'model-Malaria-Detection-xception')
-    loaded_model = tf.keras.models.load_model(r'model-Malaria-Detection-mobilenet2')
+    loaded_model = tf.keras.models.load_model(r'model-Malaria-Detection-xception')
+    #loaded_model = tf.keras.models.load_model(r'model-Malaria-Detection-mobilenet2')
     
     # loaded_model.summary()
     #x = tf.random.uniform((10, 3))
@@ -33,11 +33,13 @@ def load_model():
 loaded_model = load_model()
 
 def file_selector(folder_path='.'):
-    filenames = os.listdir("./images/")
+    filenames = os.listdir(folder_path)
     selected_filename = st.selectbox('Select a file', filenames)
-    return os.path.join(folder_path, selected_filename)
+    file = os.path.join(folder_path, selected_filename)
+    st.image(file)
+    return file
 
-file1 = './images/'+ file_selector()
+file1 = file_selector('./images/')
 
 # file1 = st.file_uploader('Upload an Image')
 # file1 = file1.name
@@ -52,10 +54,11 @@ if btn and file1!=None:
     prediction = np.round(1-loaded_model.predict(img_preprocessed)[0][0],2)
 
     if prediction<.1:
-        title = "Uninfected " + str(prediction*100) +"%"       
+        title = "Uninfected"       
     else:
-        title = "Infected " + str(prediction*100) + "%"
+        title = "Infected" 
         
 
-    st.header("It is "+title)
+    st.subheader("It is "+title)
+    st.text('Infaction probability '+ str(prediction*100) +"%" )
     st.image(file1)
